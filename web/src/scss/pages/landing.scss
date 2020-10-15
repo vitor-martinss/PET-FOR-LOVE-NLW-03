@@ -1,0 +1,46 @@
+#page-landing {
+	@include size(100vw, 100vh);
+	background: linear-gradient(329.54deg, var(--blue-400) 0%, var(--blue-300) 100%);
+	@extend %flex-center;
+	
+
+	.content-wrapper {
+		@include size(100%);
+		@extend %flex-column;
+		padding: 3rem 0;
+		position: relative;
+		max-width: 110rem;
+		max-height: 68rem;
+		justify-content: space-between;
+		align-items: flex-start;
+		background: url('../../images/illustration.svg') no-repeat 80% center;
+
+		main {
+			max-width: 35rem;
+
+			p {
+				margin-top: 4rem;
+			}
+		}
+
+		.location {
+			@include absolute(top 3rem right 0);
+			@extend %flex-column;
+			align-items: flex-end;
+		}
+
+		.enter-app {
+			@include absolute(bottom 3rem right 0);
+			@include size(8rem);
+			background: var(--yellow-300);
+			@include border-radius(3rem);
+			@extend %flex-center;
+			transition: .2s;
+
+			&:hover {
+				background: var(--blue-100);
+			}
+		}
+
+	}
+}
