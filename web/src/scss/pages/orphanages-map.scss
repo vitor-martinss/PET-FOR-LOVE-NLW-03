@@ -51,6 +51,7 @@
 		.leaflet-popup-content {
 			margin: .8rem 1.2rem;
 			@extend %flex-center;
+			flex-wrap: nowrap;
 
 			a {
 				@include size(4rem);
@@ -59,6 +60,7 @@
 				@include border-radius(1.2rem);
 				@extend %flex-center;
 				margin-left: 1.5rem;
+				flex-shrink: 0;
 			}
 		}
 
