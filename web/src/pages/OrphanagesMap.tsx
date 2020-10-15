@@ -9,6 +9,7 @@ import mapMarkerImg from '../images/icon-map.svg'
 import mapIcon from '../utils/mapIcon'
 import api from '../services/api'
 
+// typescript interface
 interface Guild {
 	id: number;
 	latitude: number;
@@ -18,15 +19,17 @@ interface Guild {
 
 function OrphanagesMap() {
 
+	// this part is responsible for integration with backend
 	const [guilds, setGuilds] = useState<Guild[]>([])
 
-	//hooks since fev2019 -- starting using api - connect to backend
+	// react hooks since fev2019 -- starting using api - connect to backend
 	useEffect(() => {
 		api.get('guild').then(response => {
 			setGuilds(response.data)
 		})
 	}, [])
 
+	// this part is basically html
 	return (
 		<div id="page-map">
 			<aside>
