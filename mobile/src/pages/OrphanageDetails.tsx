@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Image, View, ScrollView, Text, StyleSheet, Dimensions, Linking } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { Feather, FontAwesome } from '@expo/vector-icons';
-import { RectButton, TouchableOpacity } from 'react-native-gesture-handler';
+import { Feather } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useRoute } from '@react-navigation/native'
 
 import mapMarkerImg from '../images/map-marker.png';
@@ -57,7 +57,7 @@ export default function OrphanageDetails() {
 		<ScrollView style={styles.container}>
 			<View style={styles.imagesContainer}>
 				<ScrollView horizontal pagingEnabled>
-					{orphanage.images.map(image => {
+					{orphanage.images.map((image) => {
 						return (
 							<Image
 								key={image.id}
