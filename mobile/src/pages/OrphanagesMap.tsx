@@ -1,23 +1,41 @@
-import React from 'react'
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE, Callout } from 'react-native-maps'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
-import mapMarker from '../images/map-marker.png'
-
 import { RectButton } from 'react-native-gesture-handler';
+
+import mapMarker from '../images/map-marker.png'
+import api from '../services/api';
+
+interface Guild {
+	id: number;
+	latitude: number;
+	longitude: number;
+	name: string;
+}
 
 export default function OrphanagesMap() {
 	const navigation = useNavigation()
 
-	function handleNavigateToOrphanagesDetails() {
-		navigation.navigate('OrphanageDetails')
+	// this part is responsible for integration with backend
+	const [guilds, setGuilds] = useState<Guild[]>([])
+
+	// react hooks since fev2019 -- starting using api - connect to backend
+	useEffect(() => {
+		api.get('guild').then(response => {
+			setGuilds(response.data)
+		})
+	}, [])
+
+	function handleNavigateToOrphanagesDetails(id: number) {
+		navigation.navigate('OrphanageDetails', { id })
 	}
 
 	function handleNavigateToCreateOrphanage() {
 		navigation.navigate('SelectMapPosition')
 	}
-	return(
+	return (
 		<View style={styles.container}>
 
 			<MapView
@@ -30,27 +48,32 @@ export default function OrphanagesMap() {
 					longitudeDelta: 0.008,
 				}}
 			>
-				<Marker
-					icon={mapMarker}
-					calloutAnchor={{
-						x: 2.7,
-						y: 0.8,
-					}}
-					coordinate={{
-						latitude: 38.7241156,
-						longitude: -9.1345474,
-					}}
-				>
-					<Callout tooltip onPress={handleNavigateToOrphanagesDetails}>
-						<View style={styles.calloutContainer}>
-							<Text style={styles.calloutText}>Pet For Love</Text>
-						</View>
-					</Callout>
+				{guilds.map(guild => {
+					return (
+						<Marker
+							key={guild.id}
+							icon={mapMarker}
+							calloutAnchor={{
+								x: 2.7,
+								y: 0.8,
+							}}
+							coordinate={{
+								latitude: guild.latitude,
+								longitude: guild.longitude,
+							}}
+						>
+							<Callout tooltip onPress={() => handleNavigateToOrphanagesDetails(guild.id)}>
+								<View style={styles.calloutContainer}>
+									<Text style={styles.calloutText}>{guild.name}</Text>
+								</View>
+							</Callout>
 
-				</Marker>
+						</Marker>
+					)
+				})}
 			</MapView>
 			<View style={styles.footer}>
-				<Text style={styles.footerText}>2 associacoes encontradas</Text>
+				<Text style={styles.footerText}>{guilds.length} associacoes encontradas</Text>
 				<RectButton style={styles.createOrphanageButton} onPress={handleNavigateToCreateOrphanage}>
 					<Feather name='plus' size={20} color="#fff" />
 				</RectButton>
